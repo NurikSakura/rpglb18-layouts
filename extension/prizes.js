@@ -12,10 +12,10 @@ const nodecg = require('./util/nodecg-api-context').get();
 const POLL_INTERVAL = 60 * 1000;
 const PRIZES_URL = nodecg.bundleConfig.useMockData ?
 	'https://www.dropbox.com/s/xu92eivaxyu9a5i/allPrizes.json?dl=1' :
-	'https://private.gamesdonequick.com/tracker/search/?type=prize&event=22';
+	'https://rpglimitbreak.com/tracker/search/?type=prize&event=6';
 const CURRENT_PRIZES_URL = nodecg.bundleConfig.useMockData ?
 	'https://www.dropbox.com/s/rpiisscgszwhguc/currentPrizes.json?dl=1' :
-	'https://private.gamesdonequick.com/tracker/search/?type=prize&feed=current&event=22';
+	'https://rpglimitbreak.com/tracker/search/?type=prize&feed=current&event=6';
 
 const currentPrizes = nodecg.Replicant('currentPrizes', {defaultValue: []});
 const allPrizes = nodecg.Replicant('allPrizes', {defaultValue: []});

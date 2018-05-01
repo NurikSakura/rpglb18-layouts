@@ -12,10 +12,10 @@ const nodecg = require('./util/nodecg-api-context').get();
 const POLL_INTERVAL = 60 * 1000;
 const BIDS_URL = nodecg.bundleConfig.useMockData ?
 	'https://www.dropbox.com/s/1gysv511t97sab5/allBids.json?dl=1' :
-	'https://private.gamesdonequick.com/tracker/search/?type=allbids&event=22';
+	'https://rpglimitbreak.com/tracker/search/?type=allbids&event=6';
 const CURRENT_BIDS_URL = nodecg.bundleConfig.useMockData ?
 	'https://www.dropbox.com/s/87n9tdh4qp72yps/currentBids.json?dl=1' :
-	'https://private.gamesdonequick.com/tracker/search/?type=allbids&feed=current&event=22';
+	'https://rpglimitbreak.com/tracker/search/?type=allbids&feed=current&event=6';
 const currentBidsRep = nodecg.Replicant('currentBids', {defaultValue: []});
 const allBidsRep = nodecg.Replicant('allBids', {defaultValue: []});
 const bitsTotal = nodecg.Replicant('bits:total');
@@ -101,10 +101,7 @@ function processRawBids(bids) {
 				state: bid.fields.state,
 				speedrun: bid.fields.speedrun__name,
 				speedrunEndtime: Date.parse(bid.fields.speedrun__endtime),
-				public: bid.fields.public,
-
-				// Green Hill Zone Blindfolded or Blindfolded Majora? Then this is a bits challenge.
-				isBitsChallenge: Boolean(bid.pk === 5788 || bid.pk === 5831)
+				public: bid.fields.public
 			};
 
 			// If this parent bid is not a target, that means it is a donation war that has options.

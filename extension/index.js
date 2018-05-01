@@ -7,7 +7,7 @@ const request = require('request-promise').defaults({jar: true}); // <= Automati
 // Ours
 const nodecgApiContext = require('./util/nodecg-api-context');
 
-const LOGIN_URL = 'https://private.gamesdonequick.com/tracker/admin/login/';
+const LOGIN_URL = 'https://rpglimitbreak.com/tracker/admin/login/';
 
 module.exports = function (nodecg) {
 	// Store a reference to this nodecg API context in a place where other libs can easily access it.
@@ -67,21 +67,21 @@ module.exports = function (nodecg) {
 			require('./twitter');
 		}
 	} else {
-		nodecg.log.warn('"twitter" is not defined in cfg/agdq18-layouts.json! ' +
+		nodecg.log.warn('"twitter" is not defined in cfg/rpglb18-layouts.json! ' +
 			'Twitter integration will be disabled.');
 	}
 
 	if (nodecg.bundleConfig.osc && nodecg.bundleConfig.osc.address) {
 		require('./mixer');
 	} else {
-		nodecg.log.warn('"osc" is not defined in cfg/agdq18-layouts.json! ' +
+		nodecg.log.warn('"osc" is not defined in cfg/rpglb18-layouts.json! ' +
 			'Behringer X32 OSC integration will be disabled.');
 	}
 
 	if (nodecg.bundleConfig.firebase && Object.keys(nodecg.bundleConfig.firebase).length > 0) {
 		require('./interview');
 	} else {
-		nodecg.log.warn('"firebase" is not defined in cfg/agdq18-layouts.json! ' +
+		nodecg.log.warn('"firebase" is not defined in cfg/rpglb18-layouts.json! ' +
 			'The interview question system (Lightning Round) will be disabled.');
 	}
 

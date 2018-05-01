@@ -165,10 +165,10 @@ function update() {
 	const runnersPromise = request({
 		uri: nodecg.bundleConfig.useMockData ?
 			'https://www.dropbox.com/s/lmhh2tctyrvipdr/runners.json' :
-			'https://private.gamesdonequick.com/tracker/search',
+			'https://rpglimitbreak.com/tracker/search',
 		qs: {
 			type: 'runner',
-			event: 22,
+			event: 6,
 			dl: 1 // For Dropbox only
 		},
 		json: true
@@ -177,38 +177,18 @@ function update() {
 	const runsPromise = request({
 		uri: nodecg.bundleConfig.useMockData ?
 			'https://www.dropbox.com/s/7njvyl80m34b46s/schedule.json' :
-			'https://private.gamesdonequick.com/tracker/search',
+			'https://rpglimitbreak.com/tracker/search',
 		qs: {
 			type: 'run',
-			event: 22,
-			dl: 1 // For Dropbox only
-		},
-		json: true
-	});
-
-	const adsPromise = request({
-		uri: nodecg.bundleConfig.useMockData ?
-			'https://www.dropbox.com/s/p04aoahtx6hv10i/ads.json' :
-			'https://private.gamesdonequick.com/tracker/gdq/ads/22/',
-		qs: {
-			dl: 1 // For Dropbox only
-		},
-		json: true
-	});
-
-	const interviewsPromise = request({
-		uri: nodecg.bundleConfig.useMockData ?
-			'https://www.dropbox.com/s/kr8279xxnrzsyp4/interviews.json' :
-			'https://private.gamesdonequick.com/tracker/gdq/interviews/22/',
-		qs: {
+			event: 6,
 			dl: 1 // For Dropbox only
 		},
 		json: true
 	});
 
 	return Promise.all([
-		runnersPromise, runsPromise, adsPromise, interviewsPromise
-	]).then(([runnersJSON, runsJSON, adsJSON, interviewsJSON]) => {
+		runnersPromise, runsPromise
+	]).then(([runnersJSON, runsJSON]) => {
 		const formattedRunners = [];
 		runnersJSON.forEach(obj => {
 			formattedRunners[obj.pk] = {
@@ -223,9 +203,7 @@ function update() {
 
 		const formattedSchedule = calcFormattedSchedule({
 			rawRuns: runsJSON,
-			formattedRunners,
-			formattedAds: adsJSON.map(formatAd),
-			formattedInterviews: interviewsJSON.map(formatInterview)
+			formattedRunners
 		});
 
 		// If nothing has changed, return.
@@ -385,46 +363,14 @@ function _seekToArbitraryRun(runOrOrder) {
  * @returns {Array} - A formatted schedule.
  */
 
-function calcFormattedSchedule({rawRuns, formattedRunners, formattedAds, formattedInterviews}) {
+function calcFormattedSchedule({rawRuns, formattedRunners, formattedInterviews}) {
 	const flatSchedule = rawRuns
 		.map(run => {
 			return formatRun(run, formattedRunners);
 		})
-		.concat(formattedAds)
-		.concat(formattedInterviews)
 		.sort(suborderSort);
 
-	const schedule = [];
-
-	let adBreak;
-	flatSchedule.forEach((item, index) => {
-		if (item.type === 'ad') {
-			if (!adBreak) {
-				adBreak = {
-					type: 'adBreak',
-					ads: []
-				};
-			}
-
-			adBreak.ads.push(item);
-
-			// Always make the ID of the entire break be equal to the ID of the last item in that break.
-			adBreak.id = item.id;
-
-			const nextItem = flatSchedule[index + 1];
-			if (nextItem && nextItem.type === 'ad') {
-				return;
-			}
-
-			schedule.push(adBreak);
-			adBreak = null;
-			return;
-		}
-
-		schedule.push(item);
-	});
-
-	return schedule;
+	return flatSchedule;
 }
 
 /**
@@ -457,67 +403,6 @@ function formatRun(run, formattedRunners) {
 		id: run.pk,
 		pk: run.pk,
 		type: 'run'
-	};
-}
-
-/**
- * Formats a raw ad object from the GDQ Tracker API into a slimmed-down version for our use.
- * @param {Object} ad - A raw ad object from the GDQ Tracker API.
- * @returns {Object} - The formatted ad object.
- */
-function formatAd(ad) {
-	return {
-		id: ad.pk,
-		name: ad.fields.ad_name,
-		adType: calcAdType(ad.fields.filename),
-		filename: ad.fields.filename,
-		duration: ad.fields.length,
-		order: ad.fields.order,
-		suborder: ad.fields.suborder,
-		sponsorName: ad.fields.sponsor_name,
-		type: 'ad'
-	};
-}
-
-/**
- * We completely ignore the ad_type field from the tracker because it's been wrong
- * a few too many times. And when its wrong, everything explodes.
- * It's safer just to compute the type ourselves based on the filename.
- * @param {string} filename - The name of the file, with extension included.
- * @returns {('VIDEO'|'IMAGE')} - The type of this ad.
- */
-function calcAdType(filename) {
-	if (filename.endsWith('.mp4') ||
-		filename.endsWith('.webm') ||
-		filename.endsWith('.mov') ||
-		filename.endsWith('.avi')) {
-		return 'VIDEO';
-	}
-
-	if (filename.endsWith('.png') ||
-		filename.endsWith('.jpg') ||
-		filename.endsWith('.jpeg')) {
-		return 'IMAGE';
-	}
-
-	throw new Error(`Unexpected ad type! Filename: "${filename}"`);
-}
-
-/**
- * Formats a raw interview object from the GDQ Tracker API into a slimmed-down version for our use.
- * @param {Object} interview - A raw interview object from the GDQ Tracker API.
- * @returns {Object} - The formatted interview object.
- */
-function formatInterview(interview) {
-	return {
-		id: interview.pk,
-		interviewees: splitString(interview.fields.interviewees),
-		interviewers: splitString(interview.fields.interviewers),
-		duration: interview.fields.length,
-		order: interview.fields.order,
-		subject: interview.fields.subject,
-		suborder: interview.fields.suborder,
-		type: 'interview'
 	};
 }
 

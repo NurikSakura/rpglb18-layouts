@@ -171,7 +171,7 @@ function addTweet(tweet) {
 	tweet.text = tweet.text.replace(/\n/ig, ' ');
 
 	// Highlight the #AGDQ2018 hashtag.
-	tweet.text = tweet.text.replace(/#agdq2018/ig, '<span class="hashtag">#AGDQ2018</span>');
+	tweet.text = tweet.text.replace(/#rpglb2018/ig, '<span class="hashtag">#RPGLB2018</span>');
 
 	// Add the tweet to the list
 	tweets.value.push(tweet);

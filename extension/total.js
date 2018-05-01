@@ -1,6 +1,6 @@
 'use strict';
 
-const DONATION_STATS_URL = 'https://private.gamesdonequick.com/tracker/22?json';
+const DONATION_STATS_URL = 'https://rpglimitbreak.com/tracker/6?json';
 
 // Packages
 const request = require('request');
