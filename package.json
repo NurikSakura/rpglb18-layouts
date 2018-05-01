@@ -1,10 +1,11 @@
 {
-  "name": "agdq18-layouts",
-  "description": "The on-stream graphics used during Awesome Games Done Quick 2017.",
+  "name": "rpglb18-layouts",
+  "description": "The on-stream graphics used during RPG Limit Break 2018.",
   "version": "1.0.0",
   "contributors": [
     "Alex Van Camp <email@alexvan.camp>",
-    "Chris Hanel <chrishanel@gmail.com>"
+    "Chris Hanel <chrishanel@gmail.com>",
+    "Vulajin",
   ],
   "dependencies": {
     "bluebird": "^3.4.0",
@@ -15,7 +16,6 @@
     "deep-diff": "^0.3.4",
     "deep-equal": "^1.0.1",
     "firebase-admin": "^5.6.0",
-    "gamepad": "^1.4.2",
     "json-schema-defaults": "^0.3.0",
     "livesplit-core": "^0.8.1",
     "lodash.assign": "^4.0.9",
@@ -44,7 +44,7 @@
     "istanbul": "^0.4.3",
     "mocha": "^4.0.1"
   },
-  "homepage": "https://gamesdonequick.com/",
+  "homepage": "https://rpglimitbreak.com/",
   "license": "Apache-2.0",
   "nodecg": {
     "compatibleRange": "~0.9.0",
@@ -288,7 +288,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/GamesDoneQuick/agdq18-layouts.git"
+    "url": "git://github.com/Vulajin/rpglb18-layouts.git"
   },
   "scripts": {
     "static": "eslint **/*.js **/*.html && polymer lint",
