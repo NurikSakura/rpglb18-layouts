@@ -2,18 +2,14 @@
 	'use strict';
 
 	const MILESTONES = [
-		{name: 'AGDQ 2014', total: 1031665.50},
-		{name: 'AGDQ 2015', total: 1576085.00},
-		{name: 'AGDQ 2016', total: 1216309.02},
-		{name: 'SGDQ 2016', total: 1294139.50},
-		{name: 'AGDQ 2017', total: 2222790.52},
-		{name: 'SGDQ 2017', total: 1792342.37}
+		{name: 'RPGLB 2016', total: 75194.33},
+		{name: 'RPGLB 2017', total: 111773.56}
 	].sort((a, b) => {
 		return a.total - b.total;
 	}).map((milestone, index, array) => {
 		const precedingMilestone = index > 0 ?
 			array[index - 1] :
-			{name: 'none', total: 1000000};
+			{name: 'none', total: 50000};
 
 		const succeedingMilestone = array[index + 1];
 
@@ -33,7 +29,7 @@
 
 	// Replicants.
 	const currentBids = nodecg.Replicant('currentBids');
-	const currentLayout = nodecg.Replicant('gdq:currentLayout');
+	const currentLayout = nodecg.Replicant('rpglb:currentLayout');
 	const currentPrizes = nodecg.Replicant('currentPrizes');
 	const currentRun = nodecg.Replicant('currentRun');
 	const nextRun = nodecg.Replicant('nextRun');
@@ -41,9 +37,9 @@
 	const schedule = nodecg.Replicant('schedule');
 	const total = nodecg.Replicant('total');
 
-	class GdqOmnibar extends Polymer.Element {
+	class RpglbOmnibar extends Polymer.Element {
 		static get is() {
-			return 'gdq-omnibar';
+			return 'rpglb-omnibar';
 		}
 
 		static get properties() {
@@ -216,9 +212,9 @@
 				return upcomingRuns.length >= 4;
 			});
 
-			const listElement = document.createElement('gdq-omnibar-list');
+			const listElement = document.createElement('rpglb-omnibar-list');
 			upcomingRuns.forEach((run, index) => {
-				const element = document.createElement('gdq-omnibar-run');
+				const element = document.createElement('rpglb-omnibar-run');
 				element.run = run;
 				if (index === 0) {
 					element.first = true;
@@ -276,7 +272,7 @@
 				return tl;
 			}
 
-			const containerElement = document.createElement('gdq-omnibar-challenges');
+			const containerElement = document.createElement('rpglb-omnibar-challenges');
 			containerElement.challenges = bidsToDisplay;
 
 			this.setContent(tl, containerElement);
@@ -330,7 +326,7 @@
 				return tl;
 			}
 
-			const containerElement = document.createElement('gdq-omnibar-bidwars');
+			const containerElement = document.createElement('rpglb-omnibar-bidwars');
 			containerElement.bidWars = bidsToDisplay;
 
 			this.setContent(tl, containerElement);
@@ -365,9 +361,9 @@
 				return true;
 			}).concat(specialPrizesToDisplayLast);
 
-			const listElement = document.createElement('gdq-omnibar-list');
+			const listElement = document.createElement('rpglb-omnibar-list');
 			prizesToDisplay.forEach(prize => {
-				const element = document.createElement('gdq-omnibar-prize');
+				const element = document.createElement('rpglb-omnibar-prize');
 				element.prize = prize;
 				listElement.appendChild(element);
 			});
@@ -394,8 +390,8 @@
 				return tl;
 			}
 
-			// If the current total is < $1M, return.
-			if (total.value.raw < 1000000) {
+			// If the current total is < $50K, return.
+			if (total.value.raw < 50000) {
 				return tl;
 			}
 
@@ -408,7 +404,7 @@
 				return tl;
 			}
 
-			const milestoneTrackerElement = document.createElement('gdq-omnibar-milestone-tracker');
+			const milestoneTrackerElement = document.createElement('rpglb-omnibar-milestone-tracker');
 			milestoneTrackerElement.milestone = currentMilestone;
 			milestoneTrackerElement.currentTotal = total.value.raw;
 
@@ -427,5 +423,5 @@
 		}
 	}
 
-	customElements.define(GdqOmnibar.is, GdqOmnibar);
+	customElements.define(RpglbOmnibar.is, RpglbOmnibar);
 })();

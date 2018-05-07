@@ -7,7 +7,7 @@ const request = require('request-promise').defaults({jar: true}); // <= Automati
 // Ours
 const nodecgApiContext = require('./util/nodecg-api-context');
 
-const LOGIN_URL = 'https://rpglimitbreak.com/tracker/admin/login/';
+const LOGIN_URL = 'http://rpglimitbreak.com/tracker/admin/login/';
 
 module.exports = function (nodecg) {
 	// Store a reference to this nodecg API context in a place where other libs can easily access it.

@@ -16,5 +16,6 @@ coverage
 /.idea/shelf/
 
 firebase-credentials.json
+package-lock.json
 
 npm-debug.log
