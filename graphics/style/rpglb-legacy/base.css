@@ -1,0 +1,58 @@
+@import 'font/montserrat.css';
+
+body {
+	font-family: 'roboto';
+	margin: 0;
+	opacity: 0;
+}
+
+.filter-shadow {
+	-webkit-filter: drop-shadow(4px 4px 0 rgba(0, 0, 0, 0.33));
+}
+
+.box-shadow {
+	box-shadow: 4px 4px 0 0 rgba(0, 0, 0, 0.33);
+}
+
+.tabular-nums {
+	font-variant-numeric: tabular-nums;
+	-moz-font-feature-settings: "tnum";
+	-webkit-font-feature-settings: "tnum";
+	font-feature-settings: "tnum";
+}
+
+#container {
+	position: absolute;
+	overflow: hidden;
+}
+
+.fullscreen {
+    position: absolute;
+    width: 1280px;
+    height: 720px;
+    top: 0;
+    left: 0;
+}
+
+.social {
+    width: 2ex;
+    vertical-align: -0.30ex;
+    margin-right: 0.50ex;
+}
+.twitch {
+    content: url("/graphics/rpglb17-layouts/img/nameplate/twitch.svg");
+    vertical-align: -0.50ex;
+}
+.twitter {
+    content: url("/graphics/rpglb17-layouts/img/nameplate/twitter.svg");
+    vertical-align: -0.10ex;
+}
+.www {
+    content: url("/graphics/rpglb17-layouts/img/nameplate/globe-icon.png");
+}
+
+.omnilabel {
+    font-weight:800;
+    font-size:21px;
+    text-transform:uppercase;
+}
