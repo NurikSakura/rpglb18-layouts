@@ -1,0 +1,92 @@
+<link rel="import" href="../../components/polymer/polymer.html">
+
+<dom-module id="rpglb-nameplate">
+    <style>
+        :host {
+            position: absolute;
+            display: block;
+            color: #232020;
+            font-family: 'roboto';
+        }
+
+        #background {
+            width: 100%;
+            height: 100%;
+        }
+
+        #cactuar {
+            position: relative;
+            height: 80px;
+            width: 80px;
+            display: inline-block;
+            background: #66aaa3;
+        }
+
+        #cactuar-bg {
+        	position: relative;
+        	height: 64px;
+        	width: 64px;
+        	margin: 8px;
+        	display: inline-block;
+        	background: #bcdedd;
+        	border-radius: 50%;
+        }
+
+        #cactuar-img {
+        	content: url("/graphics/rpglb17-layouts/img/consoles/Cactuar-Icon.png");
+        	height: 56px;
+        	position: absolute;
+        	top: 4px;
+        	left: 6px;
+        }
+
+        #info {
+            display: inline-block;
+            height: 100%;
+            position: absolute;
+            left: 80px;
+            top: 0;
+            right: 0;
+        }
+
+        #contents {
+			position: absolute;
+			top: 8%;
+            left: 10px;
+            overflow: visible;
+		}
+
+		#runner {
+			font-size: 32px;
+			font-weight: 700;
+			height: 60%;
+            text-align: left;
+            width: intrinsic;
+            white-space: nowrap;
+		}
+
+		#social {
+            width: intrinsic;
+            white-space: nowrap;
+			font-size: 18px;
+			font-weight: 700;
+			height: 30%;
+		}
+    </style>
+
+    <template>
+    	<div id="background">
+            <div id="cactuar">
+    		    <div id="cactuar-bg"><img id="cactuar-img" /></div>
+            </div>
+            <div id="info">
+        		<div id="contents">
+    		        <div id="runner"></div>
+    		        <div id="social"></div>
+    		    </div>
+            </div>
+    	</div>
+    </template>
+</dom-module>
+
+<script src="nameplate.js"></script>

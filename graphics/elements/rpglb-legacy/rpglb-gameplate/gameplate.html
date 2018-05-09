@@ -1,0 +1,123 @@
+<link rel="import" href="../../components/polymer/polymer.html">
+
+<dom-module id="rpglb-gameplate">
+    <style>
+        :host {
+            position: absolute;
+            display: block;
+            color: #232020;
+            font-family: 'roboto';
+            overflow: visible;
+        }
+
+        #background {
+            width: 100%;
+            height: 100%;
+        }
+
+        #console {
+            position: relative;
+            height: 80px;
+            width: 80px;
+            display: inline-block;
+            background: #66aaa3;
+        }
+
+        #console-bg {
+            position: relative;
+            height: 64px;
+            width: 64px;
+            margin: 8px;
+            display: inline-block;
+            background: #bcdedd;
+            border-radius: 50%;
+        }
+
+        .console-img {
+            height: 56px;
+            position: absolute;
+            top: 4px;
+            left: 6px;
+        }
+
+        #contents-bg {
+            position: absolute;
+            background: #f5f5f5;
+            left: 80px;
+            right: 175px;
+            top: 0px;
+            height: 80px;
+        }
+
+        #contents {
+            position: absolute;
+            left: 10px;
+            top: 4%;
+            overflow: visible;
+        }
+
+        #time {
+            display: inline-block;
+            background: #66aaa3;
+            height: 80px;
+            width: 175px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            text-align: right;
+        }
+
+        #time-contents {
+            position: absolute;
+            top: 4%;
+            right: 10px;
+            text-align: right;
+        }
+
+        #game, #timer {
+            font-size: 40px;
+            font-weight: 700;
+            max-height: 70%;
+            white-space: nowrap;
+        }
+
+        #game {
+            width: intrinsic;
+            text-align: left;
+        }
+
+        #category, #estimate {
+            position: static;
+            width: intrinsic;
+            font-size: 17px;
+            font-weight: 500;
+            height: 20%;
+        }
+
+        #timer, #estimate {
+            float: right;
+        }
+    </style>
+
+    <template>
+        <div id="background">
+            <div id="console">
+                <div id="console-bg"></div>
+            </div>
+            <div id="time">
+                <div id="time-contents">
+                    <div id="timer">0:00:00</div>
+                    <div id="estimate"></div>
+                </div>
+            </div>
+            <div id="contents-bg">
+                <div id="contents">
+                    <div id="game"></div>
+                    <div id="category"></div>
+                </div>
+            </div>
+        </div>
+    </template>
+</dom-module>
+
+<script src="gameplate.js"></script>

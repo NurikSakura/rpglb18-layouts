@@ -1,0 +1,392 @@
+<link rel="import" href="../../components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../../components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../components/iron-pages/iron-pages.html">
+<link rel="import" href="../../imports/gsap-SplitText.html">
+<link rel="import" href="../../imports/gsap-ModifiersPlugin.html">
+
+<dom-module id="gdq-break-bids">
+	<template>
+		<style include="iron-flex iron-flex-alignment">
+			:host {
+				display: flex;
+				flex-direction: column;
+				width: 100%;
+				height: 100%;
+				font-family: "Roboto";
+				color: #232020;
+				padding-top: 10px;
+				font-weight: 600;
+				box-sizing: border-box;
+			}
+
+			#runName {
+				height: 25px;
+				font-size: 19px;
+				text-align: center;
+				padding: 0 0px;
+
+				@apply(--layout-horizontal);
+				@apply(--layout-center-center);
+			}
+
+			#runName-content {
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+
+			#bidDescription {
+				position: relative;
+				height: 75px;
+				font-size: 28px;
+				line-height: 31px;
+				text-align: center;
+				vertical-align: bottom;
+				padding: 0 16px;
+
+				@apply(--layout-horizontal);
+				@apply(--layout-center-center);
+			}
+
+			#bidDescription-content {
+				position: absolute;
+			}
+
+			:host:not([bid-type="challenge"]) #bidDescription-content .line:nth-child(n+2) {
+				display: none!important;
+			}
+
+			:host[bid-type="challenge"] #bidDescription-content .line:nth-child(n+3) {
+				display: none!important;
+			}
+
+			#body {
+				flex-grow: 1;
+				@apply(--layout-vertical);
+
+				/* prep for animation */
+				opacity: 0;
+			}
+
+			#challenge {
+				position: relative;
+				top: 5px;
+			}
+
+			#challenge-goal {
+				color: transparent;
+				background-image: url("/graphics/rpglb17-layouts/img/break/border.png");
+				font-size: 40px;
+				letter-spacing: 0.08em;
+				font-weight: 700;
+				width: 277px;
+				height: 56px;
+				text-align: center;
+				padding-top: 6px;
+				margin: 0 17px;
+			}
+
+			#challenge-bar {
+				width: 372px;
+				height: 33px;
+				background-image: url("/graphics/rpglb17-layouts/img/break/bar_bg.png");
+			}
+
+			#challenge-bar-fill {
+				position: relative;
+				top: 6px;
+				height: 20px;
+				background-color: rgba(109, 107, 161, 0.85);
+			}
+
+			#challenge-bar-fill-label {
+				position: absolute;
+				right: 0;
+				top: 20px;
+				width: 0; /* bit of a hack to position it correctly */
+
+				@apply(--layout-vertical);
+				@apply(--layout-center-center);
+			}
+
+			#challenge-bar-fill-label-text {
+				color: #6d6ba1;
+				font-size: 30px;
+				font-weight: 700;
+
+				line-height: 30px;
+			}
+
+			#tug {
+				flex-grow: 1;
+				@apply(--layout-vertical);
+				@apply(--layout-center-justified);
+			}
+
+			#tug-left {
+				margin-left: 49px;
+
+				@apply(--layout-vertical);
+			}
+
+			#tug-left .tug-option-desc .character,
+			#tug-left .tug-option-total .character {
+				color: #6d6ba1;
+			}
+
+			#tug-right {
+				margin-right: 49px;
+				@apply(--layout-vertical);
+				@apply(--layout-end);
+			}
+
+			#tug-right .tug-option-desc .character,
+			#tug-right .tug-option-total .character {
+				color: #0a799a;
+			}
+
+			.tug-option-desc {
+				font-size: 24px;
+				font-weight: 700;
+				line-height: 32px;
+				height: 32px;
+				overflow: hidden;
+				color: transparent;
+				max-width: 450px;
+			}
+
+			.tug-option-total {
+				font-size: 30px;
+				font-weight: 400;
+				line-height: 21px;
+				color: transparent;
+			}
+
+			#tug-bar {
+				width: 372px;
+				height: 33px;
+				background-image: url("/graphics/rpglb17-layouts/img/break/bar_bg.png");
+				@apply(--layout-horizontal);
+				@apply(--layout-center);
+			}
+
+			#tug-bar-fill {
+				width: 100%;
+				height: 20px;
+				margin-bottom: 1px;
+				background-color: #0a799a;
+			}
+
+			#tug-bar-left {
+				width: 50%;
+				height: 100%;
+				background-color: #6d6ba1;
+			}
+
+			#tug-bar-center {
+				width: 0;
+				height: 100%;
+
+				@apply(--layout-vertical);
+				@apply(--layout-center-center);
+			}
+
+			#tug-bar-center-line {
+				position: absolute;
+				width: 3px;
+				height: 42px;
+				background: white;
+			}
+
+			#tug-bar-center-label {
+				height: 13px;
+				border: 1px solid white;
+				background-color: #000000;
+				z-index: 1;
+				padding: 0 3px;
+				color: #ffffff;
+				font-size: 10px;
+				font-weight: 400;
+				box-sizing: border-box;
+				@apply(--layout-horizontal);
+				@apply(--layout-center-center);
+			}
+
+			#tug-bar-center-label-leftarrow {
+				margin-right: 2px;
+			}
+
+			#tug-bar-center-label-rightarrow {
+				margin-left: 2px;
+				transform: scaleX(-1);
+			}
+
+			#choice {
+				flex-grow: 1;
+				@apply(--layout-vertical);
+				@apply(--layout-center-justified);
+			}
+
+			.choice-row {
+				height: 57px;
+				padding-left: 27px;
+				padding-right: 23px;
+				align-items: flex-start;
+				justify-content: space-between;
+				@apply(--layout-horizontal);
+			}
+
+			.choice-row-label {
+				color: transparent;
+				font-size: 24px;
+				font-weight: 700;
+				line-height: 28px;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				max-width: 220px;
+			}
+
+			.choice-row-label .character {
+				color: #232020;
+			}
+
+			.choice-row-meter {
+				width: 216px;
+				height: 20px;
+				border: 1px solid #232020;
+				border-radius: 1px;
+				box-sizing: border-box;
+			}
+
+			.choice-row-meter-fill {
+				height: 18px;
+				background-color: #6d6ba1;
+			}
+
+			.choice-row-amount {
+				color: transparent;
+				padding-top: 12px;
+				font-size: 36px;
+				font-weight: 400;
+				line-height: 1.0;
+			}
+
+			.choice-row-amount .character {
+				color: #6d6ba1;
+			}
+
+			.choice-row:first-of-type .choice-row-meter-fill {
+				background-color: #66aaa3;
+			}
+
+			.choice-row:first-of-type .choice-row-amount {
+				padding-top: 4px;
+				font-size: 42px;
+				font-weight: 700;
+			}
+
+			#challenge-goal .character,
+			.choice-row:first-of-type .choice-row-amount .character {
+				-webkit-background-clip: text;
+				color: #66aaa3;
+			}
+
+			.mirrored {
+				transform: scaleX(-1);
+			}
+		</style>
+
+		<div id="runName">
+			<!-- Needed to properly center SplitText's output -->
+			<div id="runName-content" class="shadow"></div>
+		</div>
+
+		<div id="bidDescription">
+			<!-- Needed to properly center SplitText's output -->
+			<div id="bidDescription-content" class="shadow"></div>
+		</div>
+
+		<iron-pages id="body" attr-for-selected="data-bid-type" selected="[[bidType]]">
+			<div id="challenge" data-bid-type="challenge">
+				<div class="layout horizontal center-center">
+					<div id="challenge-goal"></div>
+				</div>
+
+				<div style="display:inline-block; height:15px;">&nbsp;</div>
+
+				<div class="layout horizontal center-center">
+					<img src="/graphics/rpglb17-layouts/img/break/bar_left.png">
+					<div id="challenge-bar">
+						<div id="challenge-bar-fill">
+							<div id="challenge-bar-fill-label">
+								<img src="/graphics/rpglb17-layouts/img/break/arrow.png">
+								<div id="challenge-bar-fill-label-text" class="tabular-nums"></div>
+							</div>
+						</div>
+					</div>
+					<img src="/graphics/rpglb17-layouts/img/break/bar_right.png">
+				</div>
+			</div>
+
+			<div id="tug" data-bid-type="choice-binary">
+				<div id="tug-left">
+					<div class="tug-option-desc"></div>
+					<div class="tug-option-total"></div>
+				</div>
+
+				<div class="layout horizontal center-center" style="margin: 12px 0;">
+					<img src="/graphics/rpglb17-layouts/img/break/bar_left.png">
+					<div id="tug-bar">
+						<div id="tug-bar-fill">
+							<div id="tug-bar-left"></div>
+						</div>
+					</div>
+					<img src="/graphics/rpglb17-layouts/img/break/bar_right.png">
+				</div>
+
+				<div id="tug-right">
+					<div class="tug-option-total"></div>
+					<div class="tug-option-desc"></div>
+				</div>
+			</div>
+
+			<div id="choice" data-bid-type="choice-many">
+				<div class="choice-row">
+					<div class="layout vertical">
+						<div class="choice-row-label"></div>
+						<div class="choice-row-meter">
+							<div class="choice-row-meter-fill"></div>
+						</div>
+					</div>
+
+					<div class="choice-row-amount"></div>
+				</div>
+
+				<div class="choice-row">
+					<div class="layout vertical">
+						<div class="choice-row-label"></div>
+						<div class="choice-row-meter">
+							<div class="choice-row-meter-fill"></div>
+						</div>
+					</div>
+
+					<div class="choice-row-amount"></div>
+				</div>
+
+				<div class="choice-row">
+					<div class="layout vertical">
+						<div class="choice-row-label"></div>
+						<div class="choice-row-meter">
+							<div class="choice-row-meter-fill"></div>
+						</div>
+					</div>
+
+					<div class="choice-row-amount"></div>
+				</div>
+			</div>
+		</iron-pages>
+	</template>
+
+	<script src="gdq-break-bids.js"></script>
+</dom-module>
